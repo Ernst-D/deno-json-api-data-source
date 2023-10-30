@@ -1,4 +1,4 @@
-type CallbackHandler = (
+export type CallbackHandler = (
   request: Request,
   params: Record<string, string>,
 ) => Promise<Response>;
