@@ -10,4 +10,4 @@ COPY . .
 EXPOSE 8088
 
 # Define the command to run your Deno application
-CMD ["deno", "run", "--allow-net", "server.ts"]
+CMD ["deno", "run", "--allow-net","--allow-read", "server.ts"]
