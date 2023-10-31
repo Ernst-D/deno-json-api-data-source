@@ -25,7 +25,32 @@ export async function getJsonData() {
     .map((f) => fullPath + "/" + f.file);
 }
 
+async function _readJsonData(fsPaths: string[]) {
+  const res: string[] = [];
+
+  for (const fsPath of fsPaths) {
+    const file = await Deno.open(fsPath);
+    const readableStream = file.readable.getReader();
+    let jsonContent = "";
+
+    while (true) {
+      const { done, value } = await readableStream.read();
+      if (done) {
+        break;
+      }
+      jsonContent += new TextDecoder().decode(value);
+    }
+
+    res.push(JSON.parse(jsonContent));
+  }
+
+  return res;
+}
+
 debugger;
 const data = await getJsonData();
 debugger;
-console.log(data);
+//@ts-ignore
+const readData = await _readJsonData(data);
+console.log(readData);
+debugger;
