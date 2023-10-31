@@ -2,7 +2,7 @@ const homeDir = Deno.cwd();
 const pathToJsons = "/data";
 const fullPath = `${homeDir}${pathToJsons}`;
 
-export async function getJsonData() {
+async function getJsonData() {
   const files = [];
 
   for await (const file of Deno.readDir(fullPath)) {
@@ -47,10 +47,18 @@ async function _readJsonData(fsPaths: string[]) {
   return res;
 }
 
-debugger;
-const data = await getJsonData();
-debugger;
-//@ts-ignore
-const readData = await _readJsonData(data);
-console.log(readData);
-debugger;
+export async function getTransformedTestData(
+  options: { limit: number } = { limit: 3 },
+) {
+  const raw = await getJsonData();
+
+  // @ts-ignore
+  const readData = await _readJsonData(raw?.slice(0, options.limit));
+
+  const transformedData = readData.flat().map((testCase, index) => ({
+    test: testCase,
+    timestamp: new Date(Date.now() + index),
+  }));
+
+  return transformedData;
+}

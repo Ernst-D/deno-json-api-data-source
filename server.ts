@@ -1,11 +1,11 @@
 import { Router } from "./router.ts";
-import { getJsonData } from "./transform.ts";
+import { getTransformedTestData } from "./transform.ts";
 
 const port = 8088;
 
 const defaultHandler = async () => new Response("Default response");
 const jsonHandler = async () =>
-  new Response(JSON.stringify(await getJsonData()));
+  new Response(JSON.stringify(await getTransformedTestData({ limit: 3 })));
 
 const router = new Router();
 
