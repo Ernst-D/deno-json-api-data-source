@@ -7,34 +7,25 @@ export async function getJsonData() {
 
   for await (const file of Deno.readDir(fullPath)) {
     // console.log(file.name);
-    if(!file.name.endsWith(".json")){
-        return
+    if (!file.name.endsWith(".json")) {
+      return;
     }
-    const fsFile = await Deno.open(fullPath+"/"+file.name)
+    const fsFile = await Deno.open(fullPath + "/" + file.name);
     const fileStat = await Deno.fstat(fsFile.rid);
 
     files.push({
-        file: file.name,
-        time: fileStat.mtime?.getTime()
+      file: file.name,
+      time: fileStat.mtime?.getTime(),
     });
-
-
-    // debugger
-    // // deno-lint-ignore ban-ts-comment
-    // // @ts-ignore
-    // return files.sort((a,b)=> a.time - b.time).map(file => file.name)
-    // .map((file) => fullPath + "/" + file);
   }
-  
 
-
-    // deno-lint-ignore ban-ts-comment
-    // @ts-ignore
-    return files.sort((a,b)=> a.time - b.time)
+  // deno-lint-ignore ban-ts-comment
+  // @ts-ignore
+  return files.sort((a, b) => a.time - b.time)
     .map((f) => fullPath + "/" + f.file);
 }
 
-debugger
+debugger;
 const data = await getJsonData();
-debugger
+debugger;
 console.log(data);
